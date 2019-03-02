@@ -1,12 +1,23 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 
+	jwtmiddleware "github.com/auth0/go-jwt-middleware"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
+
+type Response struct {
+	Message string `json:"message"`
+}
 
 // Joke contains information about a single Joke
 type Joke struct {
@@ -43,6 +54,7 @@ type JSONWebKeys struct {
 }
 
 func main() {
+
 	jwtMiddleWare := jwtmiddleware.New(jwtmiddleware.Options{
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 			aud := os.Getenv("AUTH0_API_AUDIENCE")
@@ -52,7 +64,7 @@ func main() {
 			}
 			// verify iss claim
 			iss := os.Getenv("AUTH0_DOMAIN")
-			checkIss := token.Claims.(jwt.MapClams).VerifyIssuer(iss, false)
+			checkIss := token.Claims.(jwt.MapClaims).VerifyIssuer(iss, false)
 			if !checkIss {
 				return token, errors.New("Invalid issuer.")
 			}
@@ -90,8 +102,8 @@ func main() {
 	// Our API will consist of just two routes
 	// /jokes - which will retrieve a list of jokes a user can see
 	// /jokes/like/:jokeID - which will capture likes sent to a particular joke
-	api.GET("/jokes", JokeHandler)
-	api.POST("/jokes/like/:jokeID", LikeJoke)
+	api.GET("/jokes", authMiddleware(), JokeHandler)
+	api.POST("/jokes/like/:jokeID", authMiddleware(), LikeJoke)
 
 	// Start and run the server
 	router.Run(":3000")
@@ -135,7 +147,7 @@ func getPemCert(token *jwt.Token) (string, error) {
 		}
 	}
 
-	if cert = "" {
+	if cert == "" {
 		return cert, errors.New("undable to find appropriate key.")
 	}
 
