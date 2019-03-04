@@ -32,7 +32,7 @@ class Home extends React.Component {
       <br />
       <span className="pull-right">
       </span>
-      <h2>Jokeish</h2>
+      <h2>Amber's Joke App</h2>
       <p>Let's feed you with some funny Jokes!!!</p>
       <div className="row">
       <div className="container">
