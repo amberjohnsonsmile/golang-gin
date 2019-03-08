@@ -63,7 +63,7 @@ class Joke extends React.Component {
   }
   serverRequest(joke) {
     $.post(
-      "http://localhost:3000/api/jokes/like/" + joke.id,
+      "https://serene-dusk-55955.herokuapp.com/api/jokes/like/" + joke.id,
       { like: 1 },
       res => {
         console.log("res... ", res)
