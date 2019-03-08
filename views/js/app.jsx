@@ -15,7 +15,12 @@ class Home extends React.Component {
   }
 
   serverRequest() {
-    $.get("http://localhost:3000/api/jokes", res => {
+    const port = process.env.PORT ? process.env.PORT : 3000
+    console.log("port is", port)
+    const host = process.env.HEROKU_URL ? proccess.env.HEROKU_URL : "http://localhost"
+    console.log("host is", host)
+
+    $.get(`$host:$port/api/jokes`, res => {
       this.setState({
         jokes: res
       })
