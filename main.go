@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/contrib/static"
@@ -41,7 +42,12 @@ func main() {
 	api.GET("/jokes", JokeHandler)
 	api.POST("/jokes/like/:jokeID", LikeJoke)
 
-	router.Run(":3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	router.Run(":" + port)
 }
 
 func JokeHandler(c *gin.Context) {
