@@ -1,9 +1,0 @@
-{
-	"comment": "",
-	"ignore": "test",
-	"package": [],
-	"rootPath": "golang-gin",
-  "heroku": {
-    "goVersion": "1.12"
-  }
-}
