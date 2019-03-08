@@ -15,7 +15,7 @@ class Home extends React.Component {
   }
 
   serverRequest() {
-    $.get("https://serene-dusk-55955.herokuapp.com/api/jokes", res => {
+    $.get("http://localhost:3000/api/jokes", res => {
       this.setState({
         jokes: res
       })
@@ -63,7 +63,7 @@ class Joke extends React.Component {
   }
   serverRequest(joke) {
     $.post(
-      "https://serene-dusk-55955.herokuapp.com/api/jokes/like/" + joke.id,
+      "http://localhost:3000/api/jokes/like/" + joke.id,
       { like: 1 },
       res => {
         console.log("res... ", res)
